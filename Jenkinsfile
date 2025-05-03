@@ -15,7 +15,6 @@ pipeline {
             steps {
                 echo 'Building the application...'
                 echo 'Description: This stage builds the application using Maven.'
-                //sh 'mvn clean install'
                 //sh 'mvn clean package'
             }
         }
@@ -47,6 +46,11 @@ pipeline {
         }
 
         stage('Deploy to Staging') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
             steps {
                 echo 'Deploying to staging server...'
                 echo 'Description: This stage deploys the application to the staging server.'
